@@ -1,13 +1,33 @@
+@font-face {
+  font-family: Grtsk Exa;
+  src: url("./font/GrtskExa-Regular.ttf");
+}
+@font-face {
+  font-family: Grtsk Exa-Bold;
+  src: url("./font/GrtskExa-Bold.ttf");
+}
+
+
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+
+
+  color: #000;
+
+  font-family: "Grtsk Exa";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  monospace;
+}
+
+#app{
+  font-family: "Grtsk Exa";
+  max-width: 1444px;
+  margin: 0 auto;
 }
