@@ -24,8 +24,13 @@ code {
   monospace;
 }
 
-#app{
+#body{
   font-family: "Grtsk Exa";
   max-width: 1444px;
   margin: 0 auto;
 }
+
+#footer{
+  margin-top: 50px;
+}
+

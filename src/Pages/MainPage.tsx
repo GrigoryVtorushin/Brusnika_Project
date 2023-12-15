@@ -1,10 +1,14 @@
 import React from 'react';
 import background from '../images/Ekaterinburg.png'
 import LandItemList from "../Components/LandItemList";
-import Footer from "../Components/Footer";
 import {Button} from "react-bootstrap";
+import {Link} from "react-router-dom";
+import {useAds} from "../Store/store";
 
-const MainPage = () => {
+const MainPage = ({isLoading} : any) => {
+
+    const totalItems = useAds(state => state.totalItems);
+
     return (
         <>
             <div style={{backgroundImage: `url(${background})`,
@@ -44,26 +48,25 @@ const MainPage = () => {
             <div style={{margin:"72px 70px"}}>
                 <h2 style={{fontWeight:"600"}}>Все предложения</h2>
                 <div className={"d-flex "}>
-                    Найдено {} объявлений
+                    Найдено {totalItems} объявлений
                     <div style={{color: "#1565C0", marginLeft:"20px"}}>
                         <img src={require("../images/sortIcon.png")} alt={''}/>
                         Сортировка
                     </div>
-                    <div style={{color: "#1565C0", marginLeft:"20px"}}>
-                        <img style={{marginRight: "5px"}} src={require("../images/onMap.png")} alt={''}/>
-                        На карте
-                    </div>
+                    <Link to={'/map'}>
+                        <div style={{color: "#1565C0", marginLeft:"20px"}}>
+                            <img style={{marginRight: "5px"}} src={require("../images/onMap.png")} alt={''}/>
+                            На карте
+                        </div>
+                    </Link>
+
                 </div>
             </div>
             <div>
                 <LandItemList/>
             </div>
-            <div style={{paddingBottom:"30px", display:"flex", justifyContent: "center"}}>
-                Пагинация
-            </div>
-            <div>
-                <Footer/>
-            </div>
+
+
         </>
     );
 };

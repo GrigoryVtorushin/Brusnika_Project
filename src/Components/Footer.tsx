@@ -2,7 +2,7 @@ import React from 'react';
 
 const Footer = () => {
     return (
-        <div style={{background: "#37465B", color: "#fff", padding: "36px 0 56px 72px", fontSize: '12px'}}>
+        <div id={'footer'} style={{background: "#37465B", color: "#fff", padding: "36px 0 56px 72px", fontSize: '12px'}}>
             <div style={{paddingBottom: "20px"}}>
                 © 2023 Компания Брусника
             </div>
