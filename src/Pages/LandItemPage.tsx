@@ -2,6 +2,7 @@ import React from 'react';
 import {Button, Carousel, Col, Container, Dropdown, Image, Row} from "react-bootstrap";
 import {Link, useLocation} from "react-router-dom";
 import {ad} from "../Store/store";
+import {Map, Placemark, YMaps} from "@pbe/react-yandex-maps";
 
 const LandItemPage = () => {
     const adData: ad = useLocation().state
@@ -35,9 +36,9 @@ const LandItemPage = () => {
                     </Col>
                 </Row>
                 <Row>
-                    <Col xs={11} md={7} >
-                        <div className={'ms-5'}>
-                            <Carousel interval={null} style={{maxWidth: "636px"}}>
+                    <Col xs={11} md={7}>
+                        <Row className={'ms-5'}>
+                            <Carousel  interval={null} style={{maxWidth: "636px"}}>
                                 {adData.images.map(image => {
                                     return <Carousel.Item >
                                         <Image style={{maxWidth: "636px"}} src={image.full} alt={'Фото не загрузилось'}/>
@@ -45,8 +46,7 @@ const LandItemPage = () => {
                                 })}
 
                             </Carousel>
-                        </div>
-
+                        </Row>
 
                     </Col>
                     <Col xs={7} md={5} >
@@ -54,7 +54,6 @@ const LandItemPage = () => {
                             <Button variant={"light"} className={'w-auto mb-3 border-dark border-opacity-25'}>В избранное</Button>
                         </Row>
                         <Row className={'ms-5 mb-3'} style={{fontSize: '30px'}}>
-                            {/*<Button variant={"light"} className={'w-auto mb-3 border-dark border-opacity-25'}>Показать телефон</Button>*/}
                             {adData.phones}
                         </Row>
                         <Row className={'ms-5'}>
@@ -94,6 +93,20 @@ const LandItemPage = () => {
                 <Row>
                     <h2 style={{fontSize:"20px", fontWeight:"600"}}>Расположение</h2>
                     <p>{adData.address}</p>
+                </Row>
+                <Row>
+                    <YMaps>
+                        <Map defaultState={{
+                            center: [56.8519, 60.6122],
+                            zoom: 9,
+                        }} width={"770px"} height={'364px'}>
+                            <Placemark geometry={[adData.lat, adData.lng]} />
+                        </Map>
+                    </YMaps>
+                </Row>
+                <Row className={'mt-3'}>
+                    <h2 style={{fontSize:"20px", fontWeight:"600"}}>Описание</h2>
+                    <p>{adData.description}</p>
                 </Row>
             </Container>
         </>

@@ -1,11 +1,11 @@
 import React from 'react';
 import background from '../images/Ekaterinburg.png'
 import LandItemList from "../Components/LandItemList";
-import {Button} from "react-bootstrap";
+import {Button, Spinner} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import {useAds} from "../Store/store";
 
-const MainPage = ({isLoading} : any) => {
+const MainPage = ({isLoading, isError} : any) => {
 
     const totalItems = useAds(state => state.totalItems);
 
@@ -27,20 +27,6 @@ const MainPage = ({isLoading} : any) => {
                                aria-describedby="input-group-button-right"
                         />
                         <Button variant={"light"}>Фильтры</Button>
-                        {/*<div style={{background: "#fff", padding:"5px", borderRadius:"5px", marginLeft: "5px"}}>*/}
-                        {/*    <svg width="21" height="18" viewBox="0 0 21 18" fill="none" xmlns="http://www.w3.org/2000/svg">*/}
-                        {/*        <g id="Union">*/}
-                        {/*            <path d="M13.25 0.5H11.25V2.5H0.25V4.5H11.25V5.5H13.25V0.5Z" fill="#8A8C8C"/>*/}
-                        {/*            <path d="M15.25 2.5H20.25V4.5H15.25V2.5Z" fill="#8A8C8C"/>*/}
-                        {/*            <path d="M4.25 11.5V10.5H0.25V8.5H4.25V6.5H6.25V11.5H4.25Z" fill="#8A8C8C"/>*/}
-                        {/*            <path d="M18.25 14.5H0.25V16.5H18.25V17.5H20.25V12.5H18.25V14.5Z" fill="#8A8C8C"/>*/}
-                        {/*            <path d="M20.25 8.5H8.25V10.5H20.25V8.5Z" fill="#8A8C8C"/>*/}
-                        {/*        </g>*/}
-                        {/*    </svg>*/}
-                        {/*</div>*/}
-
-
-
 
                     </div>
                 </div>
@@ -63,7 +49,11 @@ const MainPage = ({isLoading} : any) => {
                 </div>
             </div>
             <div>
-                <LandItemList/>
+                {isLoading && <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>}
+                {!isLoading && !isError && <LandItemList/>}
+                {isError && <div>Произошла ошибка загрузки данных.</div>}
             </div>
 
 

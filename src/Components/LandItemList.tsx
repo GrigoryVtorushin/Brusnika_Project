@@ -1,18 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import LandItem from "./LandItem";
-
-import {useQuery} from "react-query";
-import axios from "axios";
 import {ad, useAds} from "../Store/store";
 import {Button, Container, Pagination} from "react-bootstrap";
 
-
-// async function fetchAds() {
-//     const { data } = await axios.get(
-//         `https://urfu-project.fufsob.ru/api/get-data`
-//     );
-//     return data;
-// }
 
 const LandItemList = () => {
     let page = useAds(state => state.page);
