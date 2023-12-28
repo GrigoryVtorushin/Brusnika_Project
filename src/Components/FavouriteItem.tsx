@@ -16,18 +16,20 @@ const FavouriteItem = ({ad}: props) => {
         <Container style={{paddingBottom: "20px ", borderBottom: "1px solid #E2E3E3", marginTop: 30}}>
             <Row>
                 <Col md={4}>
-                    <div className={'d-flex'}>
-                        <Form className={'me-2'}>
-                            <Form.Check
-                                type={"checkbox"}
-                                id={String(ad.id)}
-                            >
-                            </Form.Check>
-                        </Form>
-                        <Carousel interval={null}>
+                    <div>
+                        {/*<Form className={'me-2'}>*/}
+                        {/*    <Form.Check*/}
+                        {/*        type={"checkbox"}*/}
+                        {/*        id={String(ad.id)}*/}
+                        {/*    >*/}
+                        {/*    </Form.Check>*/}
+                        {/*</Form>*/}
+                        <Carousel style={{background: "black"}} interval={null}>
                             {ad.images.map(image => {
                                 return <Carousel.Item>
-                                    <img style={{maxWidth: 400,maxHeight: "225px"}} src={image.full} alt={'Фото не загрузилось'}/>
+                                    <div style={{display: "flex", justifyContent: "center"}}>
+                                        <img style={{maxHeight: "225px"}} src={image.full} alt={'Фото не загрузилось'}/>
+                                    </div>
                                 </Carousel.Item>
                             })}
 

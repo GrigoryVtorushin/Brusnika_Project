@@ -13,12 +13,11 @@ import {useQuery} from "react-query";
 
 
 const App = () => {
-    let page = useAds(state => state.page);
-    let limit = useAds(state => state.limit)
+  const {page, limit, filter, sort, desc} = useAds();
 
     const fetchAds = useAds(state => state.fetchAds);
-    const {isLoading, isError} = useQuery(['ads', page, limit],
-        () => fetchAds(page, limit),
+    const {isLoading, isError} = useQuery(['ads', page, limit, sort, filter, desc],
+        () => fetchAds(page, limit, sort, filter, desc),
         {keepPreviousData: true});
     const ads = useAds(state => state.ads);
 

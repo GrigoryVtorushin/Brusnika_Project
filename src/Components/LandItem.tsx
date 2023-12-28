@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Carousel, Col, Container, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
 import {ad, useAds, useFavourites, useFavouritesApi, useIsAuth} from "../Store/store";
@@ -8,16 +8,24 @@ interface props {
     adData: ad
 }
 
+export function contains(a: ad[], obj: ad) {
+    let i = a.length;
+    while (i--) {
+        if (a[i].id === obj.id) {
+            return true;
+        }
+    }
+    return false;
+}
+
 const LandItem = ({ adData }: props) => {
 
     const addToFavourites = useFavourites(state => state.addToFavourites);
     const removeFromFavourites = useFavourites(state => state.removeFromFavourites);
     const favourites = useFavourites(state => state.favourites);
-    const [isInFav, setIsInFav] = useState(false);
     const {favouritesApi, addToFavApi, removeFromFavApi, fetchFavourites} = useFavouritesApi();
     const {isAuth, token} = useIsAuth();
-
-    const isInFavApi = favouritesApi.includes(adData);
+    const [isInFav, setIsInFav] = useState(contains(favouritesApi, adData))
 
     return (
         <>
@@ -26,10 +34,13 @@ const LandItem = ({ adData }: props) => {
                <Row>
                    <Col xs={6} md={3}>
                        <div>
-                           <Carousel interval={null}>
+                           <Carousel style={{background: "black"}} interval={null}>
                                {adData.images.map(image => {
-                                   return <Carousel.Item>
-                                       <img style={{maxHeight: "225px"}} src={image.full} alt={'Фото не загрузилось'}/>
+                                   return <Carousel.Item >
+                                       <div style={{display: "flex", justifyContent: "center"}}>
+                                           <img style={{maxHeight: "225px"}} src={image.full} alt={'Фото не загрузилось'}/>
+                                       </div>
+
                                    </Carousel.Item>
                                })}
 
@@ -54,19 +65,18 @@ const LandItem = ({ adData }: props) => {
                             <Button hidden={isInFav} onClick={() => {
                                 !isAuth && addToFavourites(adData);
                                 isAuth && addToFavApi(adData.id, token);
-                                setIsInFav(true);
-
+                                setIsInFav(true)
                             }}>В избранное</Button>
                             <Button hidden={!isInFav} onClick={() => {
                                 !isAuth && removeFromFavourites(adData);
                                 isAuth && removeFromFavApi(adData.id, token)
-                                setIsInFav(false);
+                                setIsInFav(false)
                             }}>В избранном</Button>
 
                             {/*<img src={require("../images/IconLike.png")} alt={'В избранное'}/>*/}
-                            <Button style={{marginLeft: "16px"}}>
-                                Показать телефон
-                            </Button>
+                            {/*<Button style={{marginLeft: "16px"}}>*/}
+                            {/*    Показать телефон*/}
+                            {/*</Button>*/}
                         </div>
                    </Col>
                </Row>

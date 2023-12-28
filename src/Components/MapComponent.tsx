@@ -4,24 +4,20 @@ import {ad, useAds} from "../Store/store";
 import {Button, Carousel, Col, Container, Image, Offcanvas, Row} from "react-bootstrap";
 import {set} from "@pbe/react-yandex-maps/typings/util/set";
 import {Link} from "react-router-dom";
+import Filters from "./Filters";
 
 const MapComponent = () => {
-    let coordinates: number[][]  = []
-    const ads: ad[] = useAds(state => state.ads)
-    const setLimit = useAds(state => state.setLimit)
+    const allAds: ad[] = useAds(state => state.allAds)
     const mapData = {
         center: [56.8519, 60.6122],
         zoom: 9,
     };
-
     const [show, setShow] = useState(false);
     const [index, setIndex] = useState(0);
 
 
     return (
         <Container>
-
-
             <YMaps>
                 {show && <Container style={{
                     width: "40%",
@@ -43,11 +39,13 @@ const MapComponent = () => {
                     </Row>
                     <Row  >
 
-                        { ads[index].images.length && <div>
-                            <Carousel interval={null}>
-                                {ads[index].images.map(image => {
+                        { allAds[index].images.length && <div>
+                            <Carousel style={{background: "black"}} interval={null}>
+                                {allAds[index].images.length && allAds[index].images.map(image => {
                                     return <Carousel.Item >
-                                        <img style={{maxHeight: "300px"}} src={image.full} alt={'Фото не загрузилось'}/>
+                                        <div style={{display: "flex", justifyContent: "center"}}>
+                                            <img style={{maxHeight: "225px"}} src={image.full} alt={'Фото не загрузилось'}/>
+                                        </div>
                                     </Carousel.Item>
                                 })}
 
@@ -56,7 +54,7 @@ const MapComponent = () => {
                     </Row>
                     <Row className={'mt-2'}>
                         <Col md={10}>
-                            {ads[index].title}
+                            {allAds[index].title}
                         </Col>
                         <Col>
                             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="13" viewBox="0 0 15 13" fill="none">
@@ -65,14 +63,14 @@ const MapComponent = () => {
                         </Col>
                     </Row>
                     <Row style={{fontSize: "20px", fontWeight: "600", marginLeft: "0"}}>
-                        {ads[index].price}
+                        {allAds[index].price}
                     </Row>
                     <Row style={{margin: 0}}>
-                        {ads[index].address}
+                        {allAds[index].address}
                     </Row>
                     <Row className={'mt-2'}>
                         <Button className={"border"} variant={"light"} >
-                            <Link to={`/${ads[index].id}`} state={ads[index]} style={{textDecoration: "none", color: "black"}}>
+                            <Link to={`/${allAds[index].id}`} state={allAds[index]} style={{textDecoration: "none", color: "black"}}>
                                 Перейти к объявлению
                             </Link>
                         </Button>
@@ -87,8 +85,7 @@ const MapComponent = () => {
                         }}
                     >
 
-                        {ads.map((ad, index) => {
-                            setLimit(-1)
+                        {allAds.map((ad, index) => {
                             return (
                                 <Placemark key={index} geometry={[ad.lat, ad.lng]} onClick={() => {
                                     setShow(true);
@@ -101,6 +98,7 @@ const MapComponent = () => {
 
                 </Map>
             </YMaps>
+
         </Container>
 
 

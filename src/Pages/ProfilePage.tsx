@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import SignUp from "../Components/SignUp";
 import SignIn from "../Components/SignIn";
 import {useIsAuth} from "../Store/store";
 import Button from "react-bootstrap/Button";
@@ -7,7 +6,6 @@ import {Container, FloatingLabel} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
-import axios from "axios";
 import {useQuery} from "react-query";
 
 

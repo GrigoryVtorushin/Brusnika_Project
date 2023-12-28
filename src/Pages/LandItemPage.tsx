@@ -1,11 +1,26 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Button, Carousel, Col, Container, Dropdown, Image, Row} from "react-bootstrap";
 import {Link, useLocation} from "react-router-dom";
-import {ad} from "../Store/store";
+import {ad, useFavourites, useFavouritesApi, useIsAuth} from "../Store/store";
 import {Map, Placemark, YMaps} from "@pbe/react-yandex-maps";
+import {contains} from "../Components/LandItem";
 
 const LandItemPage = () => {
-    const adData: ad = useLocation().state
+
+    const {favouritesApi, addToFavApi, removeFromFavApi, fetchFavourites} = useFavouritesApi();
+    const {favourites, addToFavourites, removeFromFavourites} = useFavourites();
+    const {isAuth, token} = useIsAuth();
+    const adData: ad = useLocation().state;
+    const [isInFav, setIsInFav] = useState(adData.profile.is_favorite)
+    // const [isInFav, setIsInFav] = useState(false);
+    // if(isAuth){
+    //     setIsInFav(favouritesApi.includes(adData))
+    // } else {
+    //     setIsInFav(favourites.includes(adData))
+    // }
+    const date = new Date(adData.time * 1000).toLocaleDateString();
+
+    console.log(adData)
     return (
         <>
             <Container id={"body"} className={'mt-4'} >
@@ -23,7 +38,7 @@ const LandItemPage = () => {
                     <Col xs={11} md={7} >
                         <Row className={'ms-5'}>
                             <h2 style={{fontWeight: "600"}}>{adData.title}</h2>
-                            <p>Опубликовано {} 18 февраля</p>
+                            <p>Опубликовано {date}</p>
                         </Row>
 
                     </Col>
@@ -51,7 +66,20 @@ const LandItemPage = () => {
                     </Col>
                     <Col xs={7} md={5} >
                         <Row className={'ms-5'}>
-                            <Button variant={"light"} className={'w-auto mb-3 border-dark border-opacity-25'}>В избранное</Button>
+                            <Button
+                                onClick={() => {
+                                    !isAuth && addToFavourites(adData);
+                                    isAuth && addToFavApi(adData.id, token);
+                                    setIsInFav(true)
+                                }}
+                                hidden={isInFav} variant={"light"} className={'w-auto mb-3 border-dark border-opacity-25'}>В избранное</Button>
+                            <Button
+                                onClick={() => {
+                                    !isAuth && removeFromFavourites(adData);
+                                    isAuth && removeFromFavApi(adData.id, token);
+                                    setIsInFav(false)
+                                }}
+                                hidden={!isInFav} variant={"light"} className={'w-auto mb-3 border-dark border-opacity-25'}>В избранном</Button>
                         </Row>
                         <Row className={'ms-5 mb-3'} style={{fontSize: '30px'}}>
                             {adData.phones}
