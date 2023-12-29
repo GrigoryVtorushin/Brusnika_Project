@@ -53,10 +53,12 @@ const LandItemPage = () => {
                 <Row>
                     <Col xs={11} md={7}>
                         <Row className={'ms-5'}>
-                            <Carousel  interval={null} style={{maxWidth: "636px"}}>
+                            <Carousel interval={null} style={{width: "636px", background: "black"}}>
                                 {adData.images.map(image => {
                                     return <Carousel.Item >
-                                        <Image style={{maxWidth: "636px"}} src={image.full} alt={'Фото не загрузилось'}/>
+                                        <div style={{display: "flex", justifyContent: "center"}}>
+                                            <Image style={{maxWidth: "636px",  maxHeight: 400}} src={image.full} alt={'Фото не загрузилось'}/>
+                                        </div>
                                     </Carousel.Item>
                                 })}
 

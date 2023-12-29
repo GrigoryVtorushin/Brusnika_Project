@@ -48,7 +48,8 @@ export interface adState {
     sort: string,
     filter: string,
     desc: boolean,
-    fetchAds: (page: number, limit: number, sort: string, filter: string, desc: boolean) => void,
+    search: string,
+    fetchAds: (page: number, limit: number, sort: string, filter: string, desc: boolean, search: string) => void,
     incrementPage: () => void,
     decrementPage: () => void,
     setPage: (pageNumber: number) => void,
@@ -57,6 +58,7 @@ export interface adState {
     setFilter: (filter: string) => void,
     setDesc: (desc: boolean) => void,
     setAds: (adsCopy: ad[]) => void,
+    setSearch: (search: string) => void,
 }
 
 export interface favouritesState {
@@ -113,9 +115,10 @@ export const useAds = create<adState>()(immer((set, get) => ({
     sort: 'time',
     filter: '',
     desc: true,
-    fetchAds: async (page = 0, limit = 25, sort: string = 'time', filter: string = '', desc: boolean = true, ) => {
-        const {data} = await axios.get(`https://urfu-project.fufsob.ru/api/get-data?limit=${limit}&page=${page}&sort=${sort}&filter=${filter}&desc=${desc}`);
-        const allData = await axios.get(`https://urfu-project.fufsob.ru/api/get-data?page=${0}&limit=${-1}&sort=${sort}&filter=${filter}&desc=${desc}`)
+    search: '',
+    fetchAds: async (page = 0, limit = 25, sort: string = 'time', filter: string = '', desc: boolean = true, search: string = '') => {
+        const {data} = await axios.get(`https://urfu-project.fufsob.ru/api/get-data?limit=${limit}&page=${page}&sort=${sort}&filter=${filter}&desc=${desc}&search=${search}`);
+        const allData = await axios.get(`https://urfu-project.fufsob.ru/api/get-data?page=${0}&limit=${-1}&sort=${sort}&filter=${filter}&desc=${desc}&search=${search}`)
         set({ads: data.data})
         set({totalPages: data.total_pages})
         set({totalItems: data.total_items})
@@ -160,6 +163,11 @@ export const useAds = create<adState>()(immer((set, get) => ({
     setAds: (adsCopy: ad[]) => {
         set((state) => ({
             ads: adsCopy
+        }))
+    },
+    setSearch: (search: string) => {
+        set((state) => ({
+            search: search
         }))
     }
 

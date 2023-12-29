@@ -13,13 +13,13 @@ import {useQuery} from "react-query";
 
 
 const App = () => {
-  const {page, limit, filter, sort, desc} = useAds();
+  const {page, limit, filter, sort, desc, search} = useAds();
 
     const fetchAds = useAds(state => state.fetchAds);
-    const {isLoading, isError} = useQuery(['ads', page, limit, sort, filter, desc],
-        () => fetchAds(page, limit, sort, filter, desc),
+    const {isLoading, isError} = useQuery(['ads', page, limit, sort, filter, desc, search],
+        () => fetchAds(page, limit, sort, filter, desc, search),
         {keepPreviousData: true});
-    const ads = useAds(state => state.ads);
+    const allAds = useAds(state => state.allAds);
 
     return (
         <div id={"app"}>
@@ -30,7 +30,7 @@ const App = () => {
                         <Route path={'/'} element={<MainPage isLoading={isLoading} isError={isError}/>}/>
                         <Route path={'/favourites'} element={<FavouritesPage/>}/>
                         <Route path={'/profile'} element={<ProfilePage/>}/>
-                        {ads.map(ad => {
+                        {allAds.map(ad => {
                             return <Route path={`/${ad.id}`} element={<LandItemPage/>} key={ad.id}/>
                         })}
                         <Route path={'/map'} element={<MapPage/>}/>

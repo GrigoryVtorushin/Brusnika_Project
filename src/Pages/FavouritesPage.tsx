@@ -1,7 +1,6 @@
 import React from 'react';
 import {Container, Row, Form, Col, Button} from "react-bootstrap";
-import {useAds, useFavourites, useFavouritesApi, useIsAuth, useSort} from "../Store/store";
-import LandItem from "../Components/LandItem";
+import {useFavourites, useFavouritesApi, useIsAuth, useSort} from "../Store/store";
 import FavouriteItem from "../Components/FavouriteItem";
 import {useQuery} from "react-query";
 

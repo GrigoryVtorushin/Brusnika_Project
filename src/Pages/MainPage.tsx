@@ -3,14 +3,13 @@ import background from '../images/Ekaterinburg.png'
 import LandItemList from "../Components/LandItemList";
 import {Button, Form, Spinner} from "react-bootstrap";
 import {Link} from "react-router-dom";
-import {useAds, useSort} from "../Store/store";
+import {useAds} from "../Store/store";
 import Filters from "../Components/Filters";
 
 const MainPage = ({isLoading, isError} : any) => {
 
     const totalItems = useAds(state => state.totalItems);
-    const {ads, setAds, setLimit, allAds, setSort, setFilter, setDesc} = useAds();
-    const {sorted, sortByPrice, setSorted, sortByArea, sortByTime} = useSort();
+    const {setSort, setDesc, setSearch} = useAds();
     const [showFilters, setShowFilters] = useState(false);
     return (
         <>
@@ -28,6 +27,7 @@ const MainPage = ({isLoading, isError} : any) => {
                                placeholder="Поиск"
                                aria-label="Поиск"
                                aria-describedby="input-group-button-right"
+                               onChange={event => setTimeout(() => setSearch(event.target.value), 1000)}
                         />
                         <Button variant={"light"} onClick={() => setShowFilters(true)}>Фильтры</Button>
                     </div>
@@ -42,7 +42,6 @@ const MainPage = ({isLoading, isError} : any) => {
                     {/*    Сортировка*/}
                     {/*</div>*/}
                     <Form.Select onChange={event => {
-                        const adsCopy = [...ads];
                         let value = event.target.value;
                         console.log(value);
                         if (value ==="price_up") {
@@ -87,9 +86,9 @@ const MainPage = ({isLoading, isError} : any) => {
                 </div>
             </div>
             <div>
-                {isLoading && <Spinner animation="border" role="status">
+                {isLoading && <div style={{display: "flex", justifyContent: "center"}}><Spinner animation="border" role="status">
                     <span className="visually-hidden">Loading...</span>
-                </Spinner>}
+                </Spinner></div>}
                 {!isLoading && !isError && <LandItemList/>}
                 {isError && <div>Произошла ошибка загрузки данных.</div>}
             </div>
