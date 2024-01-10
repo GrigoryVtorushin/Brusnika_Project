@@ -1,7 +1,8 @@
 import React from 'react';
-import {Button, Carousel, Col, Container, Form, Row} from "react-bootstrap";
-import {ad, useFavourites, useFavouritesApi, useIsAuth} from "../Store/store";
+import {Button, Carousel, Col, Container, Row} from "react-bootstrap";
+import {ad, useFavourites, useFavouritesApi, useIsAuth} from "../../Store/store";
 import {Link} from "react-router-dom";
+import './FavouriteItem.css'
 
 interface props {
     ad: ad
@@ -10,10 +11,10 @@ interface props {
 const FavouriteItem = ({ad}: props) => {
 
     const removeFromFavourites = useFavourites(state => state.removeFromFavourites);
-    const {favouritesApi, fetchFavourites, addToFavApi, removeFromFavApi} = useFavouritesApi();
+    const { fetchFavourites, removeFromFavApi} = useFavouritesApi();
     const {isAuth, token } = useIsAuth();
     return (
-        <Container style={{paddingBottom: "20px ", borderBottom: "1px solid #E2E3E3", marginTop: 30}}>
+        <Container className={'fav-item'} >
             <Row>
                 <Col md={4}>
                     <div>

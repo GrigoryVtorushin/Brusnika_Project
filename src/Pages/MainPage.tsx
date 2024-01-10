@@ -33,7 +33,7 @@ const MainPage = ({isLoading, isError} : any) => {
                     </div>
                 </div>
             </div>
-            <div style={{margin:"72px 70px"}}>
+            <div style={{margin:"70px 70px 20px"}}>
                 <h2 style={{fontWeight:"600"}}>Все предложения</h2>
                 <div className={"d-flex "}>
                     Найдено {totalItems} объявлений

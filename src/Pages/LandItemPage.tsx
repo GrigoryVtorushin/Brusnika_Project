@@ -1,26 +1,21 @@
 import React, {useState} from 'react';
-import {Button, Carousel, Col, Container, Dropdown, Image, Row} from "react-bootstrap";
-import {Link, useLocation} from "react-router-dom";
-import {ad, useFavourites, useFavouritesApi, useIsAuth} from "../Store/store";
+import {Button, Carousel, Col, Container, Image, Row} from "react-bootstrap";
+import {Link} from "react-router-dom";
+import {ad, useAds, useFavourites, useFavouritesApi, useIsAuth} from "../Store/store";
 import {Map, Placemark, YMaps} from "@pbe/react-yandex-maps";
-import {contains} from "../Components/LandItem";
+import {contains} from "../Components/LandItem/LandItem";
 
-const LandItemPage = () => {
+const LandItemPage = ({id}: any) => {
 
-    const {favouritesApi, addToFavApi, removeFromFavApi, fetchFavourites} = useFavouritesApi();
-    const {favourites, addToFavourites, removeFromFavourites} = useFavourites();
+    const {favouritesApi, addToFavApi, removeFromFavApi} = useFavouritesApi();
+    const {addToFavourites, removeFromFavourites} = useFavourites();
     const {isAuth, token} = useIsAuth();
-    const adData: ad = useLocation().state;
-    const [isInFav, setIsInFav] = useState(adData.profile.is_favorite)
-    // const [isInFav, setIsInFav] = useState(false);
-    // if(isAuth){
-    //     setIsInFav(favouritesApi.includes(adData))
-    // } else {
-    //     setIsInFav(favourites.includes(adData))
-    // }
+    const {allAds} = useAds();
+    const adData: ad = allAds.find(ad => ad.id === id) as ad
+    const [isInFav, setIsInFav] = useState(contains(favouritesApi, adData))
+    console.log(adData.profile.is_favorite)
     const date = new Date(adData.time * 1000).toLocaleDateString();
-
-    console.log(adData)
+    const [showPhone, setShowPhone] = useState(false);
     return (
         <>
             <Container id={"body"} className={'mt-4'} >
@@ -84,7 +79,10 @@ const LandItemPage = () => {
                                 hidden={!isInFav} variant={"light"} className={'w-auto mb-3 border-dark border-opacity-25'}>В избранном</Button>
                         </Row>
                         <Row className={'ms-5 mb-3'} style={{fontSize: '30px'}}>
-                            {adData.phones}
+                            {!showPhone && <Button variant={"light"} className={'w-auto mb-3 border-dark border-opacity-25'} onClick={() => setShowPhone(true)}>
+                                Показать телефон
+                            </Button>}
+                            {showPhone && adData.phones}
                         </Row>
                         <Row className={'ms-5'}>
                             <div className={'d-flex '}>

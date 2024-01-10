@@ -11,7 +11,7 @@ const NavigationBar = () => {
             <Navbar.Collapse id={'responsive-navbar-nav'}>
                 <Nav className='ms-auto'>
                     <Nav.Link className={'me-3'}><Link className={'Link'} to={'/'}>Список объявлений</Link> </Nav.Link>
-                    <Nav.Link className={'me-3'}><Link className={'Link'} to={'/'}>О нас</Link></Nav.Link>
+                    <Nav.Link className={'me-3'}><Link className={'Link'} to={'/about'}>О нас</Link></Nav.Link>
                     <Nav.Link className={'me-3'} href={'/favourites'}><Link className={'Link'} to={'/favourites'}>Избранное</Link></Nav.Link>
                 </Nav>
                 <Nav style={{marginRight: "72px"}}>

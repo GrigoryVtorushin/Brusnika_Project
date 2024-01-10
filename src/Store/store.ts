@@ -283,6 +283,3 @@ export const useSort = create<sortState>()(immer((set, get) => ({
         return sortedAds
     },
 })));
-export const useFilter = create()(immer((set, get) => ({
-
-})));

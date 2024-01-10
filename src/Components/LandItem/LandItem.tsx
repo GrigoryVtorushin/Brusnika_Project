@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Button, Carousel, Col, Container, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
-import {ad, useAds, useFavourites, useFavouritesApi, useIsAuth} from "../Store/store";
-
-
+import {ad, useFavourites, useFavouritesApi, useIsAuth} from "../../Store/store";
+import './LandItem.css'
 interface props {
     adData: ad
 }
@@ -22,15 +21,13 @@ const LandItem = ({ adData }: props) => {
 
     const addToFavourites = useFavourites(state => state.addToFavourites);
     const removeFromFavourites = useFavourites(state => state.removeFromFavourites);
-    const favourites = useFavourites(state => state.favourites);
-    const {favouritesApi, addToFavApi, removeFromFavApi, fetchFavourites} = useFavouritesApi();
+    const {favouritesApi, addToFavApi, removeFromFavApi} = useFavouritesApi();
     const {isAuth, token} = useIsAuth();
     const [isInFav, setIsInFav] = useState(contains(favouritesApi, adData))
 
     return (
-        <>
-
-           <Container style={{margin: "30px 50px", borderBottom: "1px solid #14191A1F", paddingBottom:"30px"}}>
+        <div className={'land-item'}>
+           <Container >
                <Row>
                    <Col xs={6} md={3}>
                        <div>
@@ -60,8 +57,7 @@ const LandItem = ({ adData }: props) => {
 
                    </Col>
                    <Col xs={6} md={3}>
-                        <div>
-
+                        <div style={{margin: "0 auto", maxWidth: 130}}>
                             <Button hidden={isInFav} onClick={() => {
                                 !isAuth && addToFavourites(adData);
                                 isAuth && addToFavApi(adData.id, token);
@@ -82,7 +78,7 @@ const LandItem = ({ adData }: props) => {
                </Row>
            </Container>
 
-        </>
+        </div>
     );
 };
 

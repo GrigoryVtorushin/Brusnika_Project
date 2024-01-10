@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import Button from 'react-bootstrap/Button';
-import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
@@ -15,7 +14,7 @@ const SignIn = () => {
 
     const [needRegister, setNeedRegister] = useState(false)
 
-    const {isAuth, setIsAuth, token, setToken, fetchProfile} = useIsAuth();
+    const { setIsAuth, setToken, fetchProfile} = useIsAuth();
     const schema = yup.object().shape({
         username: yup.string().required(),
         password: yup.string().required(),
@@ -50,7 +49,7 @@ const SignIn = () => {
                                 })
                             console.log(values)
                         }}>
-                        {({ handleSubmit, handleChange, values, touched, errors }) => (
+                        {({ handleSubmit, handleChange, values, errors }) => (
                             <Form noValidate onSubmit={handleSubmit}>
                                 <Row className="mb-3">
                                     <Form.Group controlId="validationFormikUsername">

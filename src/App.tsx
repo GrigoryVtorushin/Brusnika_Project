@@ -10,6 +10,7 @@ import Footer from "./Components/Footer";
 import MapPage from "./Pages/MapPage";
 import {useAds} from "./Store/store";
 import {useQuery} from "react-query";
+import AboutUsPage from "./Pages/AboutUsPage";
 
 
 const App = () => {
@@ -28,10 +29,11 @@ const App = () => {
                     <NavigationBar/>
                     <Routes>
                         <Route path={'/'} element={<MainPage isLoading={isLoading} isError={isError}/>}/>
+                        <Route path={'/about'} element={<AboutUsPage/>}/>
                         <Route path={'/favourites'} element={<FavouritesPage/>}/>
                         <Route path={'/profile'} element={<ProfilePage/>}/>
                         {allAds.map(ad => {
-                            return <Route path={`/${ad.id}`} element={<LandItemPage/>} key={ad.id}/>
+                            return <Route path={`/${ad.id}`} element={<LandItemPage id={ad.id}/>} key={ad.id}/>
                         })}
                         <Route path={'/map'} element={<MapPage/>}/>
                     </Routes>

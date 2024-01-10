@@ -1,19 +1,28 @@
-import React, {useEffect, useState} from 'react';
-import LandItem from "./LandItem";
-import {ad, useAds} from "../Store/store";
-import {Button, Container, Pagination} from "react-bootstrap";
+import React from 'react';
+import LandItem from "./LandItem/LandItem";
+import {useAds, useFavouritesApi, useIsAuth} from "../Store/store";
+import {Container, Pagination} from "react-bootstrap";
+import {useQuery} from "react-query";
+
 
 
 const LandItemList = () => {
-    let page = useAds(state => state.page);
-    const incrementPage = useAds(state => state.incrementPage);
-    const decrementPage = useAds(state => state.decrementPage);
-    const ads:ad[] = useAds(state => state.ads);
-    const totalPages = useAds(state => state.totalPages);
-    const setPage = useAds(state => state.setPage)
+
+    const {page, ads, totalPages, setPage} = useAds();
+    const {fetchFavourites} = useFavouritesApi();
+    const {token} = useIsAuth();
+    useQuery(
+        'favourites',
+        () => fetchFavourites(token)
+    );
     let pageItems = [];
     for (let i = 1; i <= totalPages; i++){
-        pageItems.push(<Pagination.Item onClick={() => setPage(i)} key={i} active={i === page}>{i}</Pagination.Item>)
+        pageItems.push(<Pagination.Item  onClick={() => {
+            setPage(i);
+            window.scrollTo(0, 250);
+
+        }
+        } key={i} active={i === page}>{i}</Pagination.Item>)
     }
 
     return (
@@ -28,15 +37,15 @@ const LandItemList = () => {
 
             )}
 
-            <Container style={{ display:"flex", justifyContent: "center"}}>
+            <Container style={{ display:"flex", justifyContent: "center", marginTop: 50}}>
                 <Pagination>
-                    <Button className={'me-1'} onClick={decrementPage} disabled={!page}>
-                        Назад
-                    </Button>
+                    {/*<Button variant={"dark"} className={'me-1'} onClick={decrementPage} disabled={!page}>*/}
+                    {/*    Назад*/}
+                    {/*</Button>*/}
                     {pageItems}
-                    <Button className={'ms-1'} onClick={incrementPage}>
-                        Вперед
-                    </Button>
+                    {/*<Button variant={"dark"} className={'ms-1'} onClick={incrementPage}>*/}
+                    {/*    Вперед*/}
+                    {/*</Button>*/}
                 </Pagination>
             </Container>
         </>

@@ -1,10 +1,8 @@
 import React, {useState} from 'react';
-import {Clusterer, Map, ObjectManager, Placemark, YMaps} from "@pbe/react-yandex-maps";
+import {Clusterer, Map, Placemark, YMaps} from "@pbe/react-yandex-maps";
 import {ad, useAds} from "../Store/store";
-import {Button, Carousel, Col, Container, Image, Offcanvas, Row} from "react-bootstrap";
-import {set} from "@pbe/react-yandex-maps/typings/util/set";
+import {Button, Carousel, Col, Container, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
-import Filters from "./Filters";
 
 const MapComponent = () => {
     const allAds: ad[] = useAds(state => state.allAds)

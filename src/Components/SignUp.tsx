@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -9,9 +9,9 @@ import * as yup from 'yup';
 import axios from "axios";
 import {useIsAuth} from "../Store/store";
 
-const SignUp = ({needRegister, setNeedRegister}: any) => {
+const SignUp = ({setNeedRegister}: any) => {
     const { Formik } = formik;
-    const {isAuth, setIsAuth, token, setToken, fetchProfile} = useIsAuth();
+    const {setIsAuth, setToken, fetchProfile} = useIsAuth();
     const schema = yup.object().shape({
         first_name: yup.string().required(),
         last_name: yup.string().required(),

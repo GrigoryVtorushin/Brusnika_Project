@@ -1,7 +1,7 @@
 import React from 'react';
 import {Container, Row, Form, Col, Button} from "react-bootstrap";
 import {useFavourites, useFavouritesApi, useIsAuth, useSort} from "../Store/store";
-import FavouriteItem from "../Components/FavouriteItem";
+import FavouriteItem from "../Components/FavouriteItem/FavouriteItem";
 import {useQuery} from "react-query";
 
 const FavouritesPage = () => {
@@ -10,7 +10,7 @@ const FavouritesPage = () => {
     const {favouritesApi, fetchFavourites, clearFavApi, setFavorites} = useFavouritesApi();
     const {isAuth, token } = useIsAuth();
     const {sortByArea, setSorted, sortByPrice} = useSort();
-    const {isLoading, isError} = useQuery(
+    useQuery(
         'favourites',
         () => fetchFavourites(token)
     );
@@ -21,16 +21,6 @@ const FavouritesPage = () => {
                 <h1>Избранное</h1>
             </Row>
             <Row xs={"auto"} style={{marginBottom: 20}}>
-                {/*<Col>*/}
-                {/*    <Form>*/}
-                {/*        <Form.Check*/}
-                {/*            type={"checkbox"}*/}
-                {/*            id={'default-checkbox'}*/}
-                {/*            label={`${isAuth ? favouritesApi.length: favourites.length} объявлений`}*/}
-                {/*        >*/}
-                {/*        </Form.Check>*/}
-                {/*    </Form>*/}
-                {/*</Col>*/}
                 <Col>
                     <Form.Select onChange={event => {
                         let value = event.target.value
@@ -60,11 +50,7 @@ const FavouritesPage = () => {
                         <option value="area_up">По убыванию площади</option>
                     </Form.Select>
                 </Col>
-                <Col>
-                    <Button >
-                        Показать на карте
-                    </Button>
-                </Col>
+
                 {/*<Col>*/}
                 {/*    <Button style={{background: "#0D47A1"}}>*/}
                 {/*        Удалить выбранное*/}

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import SignIn from "../Components/SignIn";
 import {useIsAuth} from "../Store/store";
 import Button from "react-bootstrap/Button";
@@ -14,7 +14,7 @@ const ProfilePage = () => {
 
     const {isAuth, setIsAuth, token, setToken, profile, fetchProfile} = useIsAuth();
 
-    const { isLoading, isError} = useQuery(
+    useQuery(
         'profile',
         () => fetchProfile(token));
 
