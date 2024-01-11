@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -9,17 +9,40 @@ import * as yup from 'yup';
 import axios from "axios";
 import {useIsAuth} from "../Store/store";
 
+
 const SignUp = ({setNeedRegister}: any) => {
+    const phoneRegExp = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/
     const { Formik } = formik;
     const {setIsAuth, setToken, fetchProfile} = useIsAuth();
     const schema = yup.object().shape({
-        first_name: yup.string().required(),
-        last_name: yup.string().required(),
-        middle_name: yup.string().required(),
-        username: yup.string().required(),
-        phone: yup.string().required(),
-        password: yup.string().required(),
+        firstName: yup.string().required('Это обязательное поле').min(1),
+        lastName: yup.string().required('Это обязательное поле'),
+        middleName: yup.string(),
+        username: yup.string().required('Это обязательное поле'),
+        phone: yup.string()
+            .required('Это обязательное поле').matches(phoneRegExp, "Неправильный номер телефона"),
+        password: yup.string().required('Это обязательное поле'),
     });
+
+    const [query, setQuery] = useState("");
+    const [displayMessage, setDisplayMessage] = useState("");
+    const[usernameError, setUsernameError] = useState('');
+    useEffect(() => {
+        const timeOutId = setTimeout(async () => {
+            setDisplayMessage(query);
+            const { data } = await axios.get(`https://urfu-project.fufsob.ru/api/username-exists?username=${query}`);
+            if (data.status === "ok"){
+                setUsernameError('Это имя пользователя уже занято')
+            } else if (query === ''){
+                setUsernameError('Это обязательное поле')
+            } else {
+                setUsernameError('')
+            }
+        }, 1000);
+        return () => clearTimeout(timeOutId);
+    }, [query]);
+
+
 
     return (
         <div style={{maxWidth: "1000px", margin:"100px auto"}}>
@@ -31,9 +54,9 @@ const SignUp = ({setNeedRegister}: any) => {
                         username: values.username,
                         password: values.password,
                         phone: values.phone,
-                        last_name: values.last_name,
-                        first_name: values.first_name,
-                        middle_name: values.middle_name,
+                        last_name: values.lastName,
+                        first_name: values.firstName,
+                        middle_name: values.middleName,
                     }})
                         .then(function (response){
                             setToken(response.data.token)
@@ -46,11 +69,11 @@ const SignUp = ({setNeedRegister}: any) => {
                     console.log(values)
                 }}
                 initialValues={{
-                    first_name: '',
-                    last_name: '',
-                    middle_name: '',
+                    firstName: '',
+                    lastName: '',
+                    middleName: '',
                     username: '',
-                    phone: '+7',
+                    phone: "+7",
                     password: '',
                 }}
             >
@@ -59,52 +82,77 @@ const SignUp = ({setNeedRegister}: any) => {
                         <Row className="mb-3">
                             <Form.Group as={Col} md="4" controlId="validationFormik01">
                                 <Form.Label>Имя</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name="first_name"
-                                    value={values.first_name}
-                                    onChange={handleChange}
-                                    isValid={touched.first_name && !errors.first_name}
-                                />
+                                <InputGroup hasValidation>
+                                    <Form.Control
+                                        type="text"
+                                        name="firstName"
+                                        value={values.firstName}
+                                        onChange={handleChange}
+                                        isValid={touched.firstName && !errors.firstName}
+                                        isInvalid={!!errors.firstName}
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.firstName}
+                                    </Form.Control.Feedback>
+                                </InputGroup>
+
                             </Form.Group>
                             <Form.Group as={Col} md="4" controlId="validationFormik02">
                                 <Form.Label>Фамилия</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name="last_name"
-                                    value={values.last_name}
-                                    onChange={handleChange}
-                                    isValid={touched.last_name && !errors.last_name}
-                                />
+                                <InputGroup hasValidation>
+                                    <Form.Control
+                                        type="text"
+                                        name="lastName"
+                                        value={values.lastName}
+                                        onChange={handleChange}
+                                        isValid={touched.lastName && !errors.lastName}
+                                        isInvalid={!!errors.lastName}
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.lastName}
+                                    </Form.Control.Feedback>
+                                </InputGroup>
+
                             </Form.Group>
                             <Form.Group as={Col} md="4" controlId="validationFormik03">
                                 <Form.Label>Отчество</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name="middle_name"
-                                    value={values.middle_name}
-                                    onChange={handleChange}
-                                    isValid={touched.middle_name && !errors.middle_name}
-                                />
+                                <InputGroup hasValidation>
+                                    <Form.Control
+                                        type="text"
+                                        name="middleName"
+                                        value={values.middleName}
+                                        onChange={handleChange}
+                                        isValid={touched.middleName && !errors.middleName}
+                                        isInvalid={!!errors.middleName}
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        {errors.middleName}
+                                    </Form.Control.Feedback>
+                                </InputGroup>
+
                             </Form.Group>
 
                         </Row>
                         <Row className="mb-3">
                             <Form.Group as={Col} md="4" controlId="validationFormikUsername">
                                 <Form.Label>Логин</Form.Label>
-                                <InputGroup hasValidation>
+                                <InputGroup >
                                     <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text>
                                     <Form.Control
                                         type="text"
                                         placeholder="Логин"
                                         aria-describedby="inputGroupPrepend"
                                         name="username"
-                                        value={values.username}
-                                        onChange={handleChange}
-                                        isInvalid={!!errors.username}
+                                        onChange={event => {
+                                            setQuery(event.target.value)
+                                            handleChange(event.target.value)
+                                            values.username = query
+                                        }}
+                                        value={query}
+                                        isInvalid={!!usernameError}
                                     />
                                     <Form.Control.Feedback type="invalid">
-                                        {errors.username}
+                                        {usernameError}
                                     </Form.Control.Feedback>
                                 </InputGroup>
                             </Form.Group>
@@ -129,9 +177,9 @@ const SignUp = ({setNeedRegister}: any) => {
                         <Row className={'mb-3'}>
                             <Form.Group as={Col} md="4" controlId="validationFormikPassword">
                                 <Form.Label>Пароль</Form.Label>
-                                <InputGroup hasValidation>
+                                <InputGroup>
                                     <Form.Control
-                                        type="password"
+                                        type="text"
                                         placeholder="Пароль"
                                         name="password"
                                         value={values.password}
@@ -145,9 +193,11 @@ const SignUp = ({setNeedRegister}: any) => {
                             </Form.Group>
                         </Row>
 
-                        <Button type="submit">Зарегистрироваться</Button>
+                        <Button type="submit" onClick={() => {
+                            console.log(errors)
+                        }}>Зарегистрироваться</Button>
 
-                        <div style={{cursor: "pointer", marginTop: 10}} onClick={() => setNeedRegister(false)}>
+                        <div style={{cursor: "pointer", marginTop: 10, width: 200}} onClick={() => setNeedRegister(false)}>
                             Уже есть аккаунт? - Войти
                         </div>
                     </Form>
