@@ -7,8 +7,8 @@ import Row from 'react-bootstrap/Row';
 import * as formik from 'formik';
 import * as yup from 'yup';
 import axios from "axios";
-import {useIsAuth} from "../Store/store";
-
+import {useIsAuth} from "../../Store/store";
+import './SignUp.css'
 
 const SignUp = ({setNeedRegister}: any) => {
     const phoneRegExp = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/
@@ -20,10 +20,13 @@ const SignUp = ({setNeedRegister}: any) => {
         middleName: yup.string(),
         username: yup.string().required('Это обязательное поле'),
         phone: yup.string()
-            .required('Это обязательное поле').matches(phoneRegExp, "Неправильный номер телефона"),
+            .required('Это обязательное поле')
+            .matches(phoneRegExp, "Неправильный номер телефона")
+            .min(11, "Неправильный номер телефона")
+            .max(12, "Неправильный номер телефона"),
         password: yup.string().required('Это обязательное поле'),
     });
-
+    const [showPasswd, setShowPasswd] = useState(false);
     const [query, setQuery] = useState("");
     const [displayMessage, setDisplayMessage] = useState("");
     const[usernameError, setUsernameError] = useState('');
@@ -146,9 +149,10 @@ const SignUp = ({setNeedRegister}: any) => {
                                         onChange={event => {
                                             setQuery(event.target.value)
                                             handleChange(event.target.value)
-                                            values.username = query
+                                            values.username = event.target.value
                                         }}
                                         value={query}
+                                        isValid={!usernameError && values.username.length>0}
                                         isInvalid={!!usernameError}
                                     />
                                     <Form.Control.Feedback type="invalid">
@@ -166,6 +170,7 @@ const SignUp = ({setNeedRegister}: any) => {
                                         name="phone"
                                         value={values.phone}
                                         onChange={handleChange}
+                                        isValid={!errors.phone && values.phone.length > 2}
                                         isInvalid={!!errors.phone}
                                     />
                                     <Form.Control.Feedback type="invalid">
@@ -177,8 +182,9 @@ const SignUp = ({setNeedRegister}: any) => {
                         <Row className={'mb-3'}>
                             <Form.Group as={Col} md="4" controlId="validationFormikPassword">
                                 <Form.Label>Пароль</Form.Label>
-                                <InputGroup>
+                                <InputGroup className={'mb-1'}>
                                     <Form.Control
+                                        className={!showPasswd ? 'passwd': ''}
                                         type="text"
                                         placeholder="Пароль"
                                         name="password"
@@ -190,12 +196,18 @@ const SignUp = ({setNeedRegister}: any) => {
                                         {errors.password}
                                     </Form.Control.Feedback>
                                 </InputGroup>
+                                <Form.Check
+                                    type={"checkbox"}
+                                    label={'Показать пароль'}
+                                    id={'show-passwd'}
+                                    onClick={() => {
+                                        setShowPasswd(current => !current)
+                                    }}
+                                />
                             </Form.Group>
                         </Row>
 
-                        <Button type="submit" onClick={() => {
-                            console.log(errors)
-                        }}>Зарегистрироваться</Button>
+                        <Button type="submit" >Зарегистрироваться</Button>
 
                         <div style={{cursor: "pointer", marginTop: 10, width: 200}} onClick={() => setNeedRegister(false)}>
                             Уже есть аккаунт? - Войти

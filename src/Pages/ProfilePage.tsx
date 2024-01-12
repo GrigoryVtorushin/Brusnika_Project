@@ -1,5 +1,5 @@
 import React from 'react';
-import SignIn from "../Components/SignIn";
+import SignIn from "../Components/Auth/SignIn";
 import {useIsAuth} from "../Store/store";
 import Button from "react-bootstrap/Button";
 import {Container, FloatingLabel} from "react-bootstrap";
@@ -7,12 +7,14 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import {useQuery} from "react-query";
+import axios from "axios";
 
 
 
 const ProfilePage = () => {
 
     const {isAuth, setIsAuth, token, setToken, profile, fetchProfile} = useIsAuth();
+
 
     useQuery(
         'profile',
@@ -42,7 +44,7 @@ const ProfilePage = () => {
                             alignItems: "center",
                             marginRight: "18px"
                         }}>
-                            В
+                            {profile.last_name ? profile.last_name.charAt(0): ""}
                         </div>
                         <div style={{
                             fontSize: 32,
@@ -89,7 +91,8 @@ const ProfilePage = () => {
                     </Col>
                 </Row>
                 <div className={' d-flex justify-content-end'}>
-                    <Button style={{maxWidth: 240}} variant={"outline-danger"} onClick={() => {
+                    <Button style={{maxWidth: 240}} variant={"outline-danger"} onClick={async () => {
+                        await axios.post(`https://urfu-project.fufsob.ru/api/logout?token=${token}`)
                         setIsAuth(false);
                         setToken('');
                     }}>

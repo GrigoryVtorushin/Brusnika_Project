@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/Row';
 import * as formik from 'formik';
 import * as yup from 'yup';
 import axios from "axios";
-import {useIsAuth} from "../Store/store";
+import {useIsAuth} from "../../Store/store";
 import SignUp from "./SignUp";
 const SignIn = () => {
 
@@ -19,9 +19,7 @@ const SignIn = () => {
         username: yup.string().required(),
         password: yup.string().required(),
     });
-
-
-
+    const [loginError, setLoginError] = useState('');
     return (
         <>
             { !needRegister &&
@@ -39,13 +37,13 @@ const SignIn = () => {
                                     password: values.password,
                                 }})
                                 .then(function (response){
+                                    setLoginError('')
                                     setIsAuth(true);
                                     setToken(response.data.token);
                                     fetchProfile(response.data.token);
-                                    console.log(response.data.token)
                                 })
                                 .catch(function (error){
-                                    console.log(error);
+                                    setLoginError('Неправильный логин или пароль.')
                                 })
                             console.log(values)
                         }}>
@@ -90,7 +88,11 @@ const SignIn = () => {
                                         </InputGroup>
                                     </Form.Group>
                                 </Row>
-                                <Button type="submit">Войти</Button>
+                                <div className={'d-flex'}>
+                                    <Button type="submit">Войти</Button>
+                                    <div hidden={!loginError.length} className={'ms-4 mt-2'} style={{color: "red"}}>{loginError}</div>
+                                </div>
+
                                 <div style={{cursor: "pointer"}} onClick={() => setNeedRegister(true)} className={'mt-3'}>
                                     Нет аккаунта? - Зарегистрируйтесь!
                                 </div>
