@@ -66,6 +66,7 @@ export interface favouritesState {
     addToFavourites: (ad: ad) => void,
     removeFromFavourites: (ad: ad) => void,
     clearFavourites: () => void,
+    setFavourites: (favs: ad[]) => void,
 }
 
 export interface profile {
@@ -194,7 +195,11 @@ export const useFavourites = create<favouritesState>()(persist(immer((set, get) 
         })
     },
     clearFavourites: () => set({favourites: []}),
-
+    setFavourites: (favs: ad[]) => {
+        set((state) => ({
+            favourites: favs
+        }))
+    }
 
 })), {name: 'favouritesStore', version: 1}));
 

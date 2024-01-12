@@ -6,10 +6,10 @@ import {useQuery} from "react-query";
 
 const FavouritesPage = () => {
 
-    const {favourites,  clearFavourites} = useFavourites()
+    const {favourites,  clearFavourites, setFavourites} = useFavourites()
     const {favouritesApi, fetchFavourites, clearFavApi, setFavorites} = useFavouritesApi();
     const {isAuth, token } = useIsAuth();
-    const {sortByArea, setSorted, sortByPrice} = useSort();
+    const {sortByArea, setSorted, sortByPrice, sortByTime} = useSort();
     useQuery(
         'favourites',
         () => fetchFavourites(token)
@@ -24,22 +24,30 @@ const FavouritesPage = () => {
                 <Col>
                     <Form.Select onChange={event => {
                         let value = event.target.value
-                        console.log(value)
+                        if (value ==="") {
+                            setSorted({sorted: value, reversed: false});
+                            isAuth && setFavorites(sortByTime(favouritesApi));
+                            !isAuth && setFavourites(sortByTime(favourites));
+                        }
                         if (value ==="price_up") {
                             setSorted({sorted: value, reversed: false});
-                            setFavorites(sortByPrice(favouritesApi));
+                            isAuth && setFavorites(sortByPrice(favouritesApi));
+                            !isAuth && setFavourites(sortByPrice(favourites));
                         }
                         if (value ==="price_down") {
                             setSorted({sorted: value, reversed: true});
-                            setFavorites(sortByPrice(favouritesApi));
+                            isAuth && setFavorites(sortByPrice(favouritesApi));
+                            !isAuth && setFavourites(sortByPrice(favourites));
                         }
                         if (value ==="area_down") {
                             setSorted({sorted: value, reversed: false})
-                            setFavorites(sortByArea(favouritesApi));
+                            isAuth && setFavorites(sortByArea(favouritesApi));
+                            !isAuth && setFavourites(sortByArea(favourites));
                         }
                         if (value ==="area_up") {
                             setSorted({sorted: value, reversed: true})
-                            setFavorites(sortByArea(favouritesApi));
+                            isAuth && setFavorites(sortByArea(favouritesApi));
+                            !isAuth && setFavourites(sortByArea(favourites));
                         }
 
                     }} style={{maxWidth: 220, marginLeft:"20px"}} aria-label="Default select example">
