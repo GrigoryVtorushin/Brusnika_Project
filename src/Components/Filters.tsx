@@ -97,8 +97,7 @@ const Filters = ({show, setShow}: any) => {
                         </Col>
                         <Col>
                             <Form.Select value={filters.published} style={{maxWidth: 140}} onChange={event => {
-                                if (event.target.value !== '')
-                                    setFilters({...filters, published: event.target.value})
+                                setFilters({...filters, published: event.target.value})
                             }}>
                                 <option value={''}>Неважно</option>
                                 <option value={'month'}>За месяц</option>
